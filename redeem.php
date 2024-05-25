@@ -101,6 +101,7 @@ if ($redeem != "y") {
 // if $mobaGameId and $mobaServerId is empty, ask to input
 if (empty($mobaGameId) || empty($mobaServerId)) {
     echo color("red", "Silahkan isi GAME ID dan SERVER ID di config.php\n");
+    exit;
 }
 
 echo "Memulai Redeem Voucher\n";
