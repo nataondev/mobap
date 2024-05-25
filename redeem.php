@@ -72,16 +72,36 @@ $cekvoc = request($urlcekvoc, null, $headersx);
 
 $hasil = json_decode($cekvoc);
 $voucher = $hasil->data->unused;
+$totalDM = 0;
+
+foreach ($voucher as $voc) {
+    $dm_title = str_replace(" MLBB Diamonds", "", $voc->title);
+    $totalDM += (int) $dm_title;
+}
 
 echo "Total Voucher: ";
-$now = date("H:i:s");
 echo color("green", count($voucher) . "\n");
+echo "Total DM: ";
+echo color("green", $totalDM . "\n");
 
+// if no voucher, exit
 if (count($voucher) == 0) {
     echo color("red", "Tidak ada voucher yang tersedia\n");
     exit;
 }
 
+// ask to input y to redeem
+echo "\nRedeem Voucher? (y/n): ";
+$redeem = trim(fgets(STDIN));
+if ($redeem != "y") {
+    echo color("red", "\nMembatalkan proses redeem\n");
+    exit;
+}
+
+// if $mobaGameId and $mobaServerId is empty, ask to input
+if (empty($mobaGameId) || empty($mobaServerId)) {
+    echo color("red", "Silahkan isi GAME ID dan SERVER ID di config.php\n");
+}
 
 echo "Memulai Redeem Voucher\n";
 $urlRedeem = "https://api.mobapay.com/account/gift_code_exchange";
